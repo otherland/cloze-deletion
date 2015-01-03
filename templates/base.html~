@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Cloze</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="static/bootstrap.min.css" rel="stylesheet" media="screen">
+   <link href='http://fonts.googleapis.com/css?family=Open+Sans:300' rel='stylesheet' type='text/css'>
+	<style>
+	body {	
+	font-family: 'Open Sans', sans-serif;
+	font-weight: 300
+	}
+	.message {
+	white-space: pre-wrap;
+	word-wrap: break-word;
+	}
+	</style>  
+</head>
+  <body>
+
+    <div class="container">
+   <div class="row no-pad">
+   <div class="col-md-3"></div> 
+	<div class="col-md-6">
+      <!-- child template -->
+      {% block content %}{% endblock %}
+
+      <!-- messages -->
+      {% if message %}
+        <br><p class="lead"><strong>Questions:</strong></p><p class ="lead message"> {{ message }}</p>
+      {% endif %}
+
+      <!-- messages -->
+      {% for message in get_flashed_messages() %}
+        {{ message }}
+      {% endfor %}
+    </div></div></div>
+<div class="col-md-3"></div>
+
+  </body>
+</html>

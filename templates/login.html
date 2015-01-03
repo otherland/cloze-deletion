@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block content %}
+	<h1><span class="light label label-primary">Cloze it!</span></h1>
+	
+	</br>
+<form role="form" action="" method="post">
+    <div class="form-group">
+        <div class="input-group input-group-lg">
+            <input type="text" class="form-control" placeholder="Enter what you wish to remember here" name="question" value="{{request.form.question }}"/>
+            <span class="input-group-btn">
+                <button class="btn btn-default" type="submit">Cloze it!</button>
+            </span>
+        </div>
+<br><input type="checkbox" name="noun" value="on" checked> Nouns <input type="checkbox" name="verb" value="on" checked> Verbs <input type="checkbox" name="adjective" value="on" checked> Adjectives <input type="checkbox" name="adverb" value="on"> Adverbs<br><input type="checkbox" name="stopwords" value="on" checked> Use stopwords 
+    </div>
+</form>
+
+{% endblock %}

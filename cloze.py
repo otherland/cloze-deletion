@@ -1,0 +1,102 @@
+import sys
+# from time import strftime
+import nltk
+from nltk import word_tokenize, pos_tag
+
+
+reload(sys)
+sys.setdefaultencoding("utf-8")
+		
+
+def question_stop(data, stop=True, noun=True, verb=True, adjective=True, adverb=True):
+	stop_words_dict = {}
+	
+	if stop:	
+		with open("stopwords.txt", "r") as s:
+			count = 0	
+			for line in s:
+				for word in line.split():
+					stop_words_dict[word] = count
+					count += 1
+
+	tags = []
+
+	if noun:
+		tags.extend(["NN", "NNP", "NNS"])
+	if verb:
+		tags.extend(["VB", "VBN", "VBG", "VBD"])
+	if adjective:
+		tags.extend(["JJ", "JJR", "JJS"])
+	if adverb:
+		tags.extend(["RB", "RBR", "RBS"])
+
+	text = word_tokenize(data)
+
+	store = []
+	data = [] # list of ALL sentences (question, answers) to write to file
+
+	# TEXT IS TAGGED INTO LITS OF TUPLES
+	tagged_list = nltk.pos_tag(text)
+	print(tagged_list)
+	
+	for index, word in enumerate(tagged_list):
+
+		temp_list = tagged_list[:]
+
+		if word[1] in tags:
+			if not word[0].lower() in stop_words_dict: 
+				answer = str(word[0])
+				temp_list[index] = ("[...]", word[1])
+				temp_list2 = [word for word, tag in temp_list]
+				temp_list2.extend(["\nA: {0}\n".format(answer)])
+				temp_list2.insert(0, "Q: ")
+	
+				store.append(temp_list2)
+
+
+	# join words by whitespace and then put each question on a new line
+	questions = (" ".join(element) + "\n" for element in store) 
+
+	string_questions = "".join(questions)
+	data.append(string_questions)
+
+	data_len = len(data)
+	data2 = "".join(data)
+
+	return data2
+
+def question_nostop(line):
+	
+	text = word_tokenize(line)
+	tags = ["JJ", "JJR", "JJS", "NN", "NNP", "NNS", "VB", "VBN", "VBG", "VBD"]
+	store = []
+	data = [] # list of ALL sentences (question, answers) to write to file
+
+	# TEXT IS TAGGED INTO LITS OF TUPLES
+	tagged_list = nltk.pos_tag(text)
+
+	for index, word in enumerate(tagged_list):
+	
+		temp_list = tagged_list[:]
+
+		if word[1] in tags:
+			# if not word[0].lower() in stop_words_dict: 
+			answer = str(word[0])
+			temp_list[index] = ("[...]", word[1])
+			temp_list2 = [word for word, tag in temp_list]
+			temp_list2.extend(["\nA: {0}\n".format(answer)])
+			temp_list2.insert(0, "Q: ")
+			store.append(temp_list2)
+	
+
+	# join words by whitespace and then put each question on a new line
+	questions = (" ".join(element) + "\n" for element in store) 
+
+	string_questions = "".join(questions)
+	data.append(string_questions)
+
+	data_len = len(data)
+	data2 = "".join(data)
+
+	return data2
+
